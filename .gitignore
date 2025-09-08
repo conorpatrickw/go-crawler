@@ -1,0 +1,7 @@
+# Binaries
+crawler
+*.exe
+
+# IDE
+.vscode/
+.idea/
