@@ -18,14 +18,19 @@ func main() {
 		log.Fatal("Please provide a starting URL using -url flag")
 	}
 	resolver := resolver.NewClient()
-	parser := parser.NewClient(&parser.ClientOptions{
+
+	if err := resolver.ValidateURL(*url); err != nil {
+		log.Fatal("Invalid URL provided:", err)
+	}
+
+	parserClient := parser.NewClient(&parser.ClientOptions{
 		Resolver: resolver,
 	})
-	crawler := crawler.NewClient(&crawler.CrawlerOptions{
-		Parser: parser,
+	crawlerClient := crawler.NewClient(&crawler.CrawlerOptions{
+		Parser: parserClient,
 	})
 
-	links, err := crawler.Crawl(*url)
+	links, err := crawlerClient.Crawl(*url)
 	if err != nil {
 		log.Fatal(err)
 	}
